@@ -16,7 +16,7 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    environment: production
+    environment: Terraform
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -43,6 +43,7 @@ jobs:
         output_format: cli,sarif
         output_file_path: console,results.sarif
         framework: terraform
+        download_external_modules: true 
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
