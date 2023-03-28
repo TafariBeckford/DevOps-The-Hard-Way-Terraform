@@ -6,6 +6,7 @@ on:
      - main
     paths:
      - terraform/**
+     - .github/**
 
 permissions:
   contents: read
