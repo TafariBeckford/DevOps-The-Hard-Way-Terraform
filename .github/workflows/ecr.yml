@@ -3,7 +3,7 @@ name: 'ECR'
 on:
   pull_request:
     branches:
-      - ecr
+      - main
     paths:
       - app/**
 
