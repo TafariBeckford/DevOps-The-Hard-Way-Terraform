@@ -23,6 +23,9 @@ jobs:
       run:
         shell: bash
     steps:
+       # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
