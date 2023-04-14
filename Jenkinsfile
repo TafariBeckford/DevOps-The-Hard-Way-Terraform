@@ -19,20 +19,26 @@ pipeline {
     }
     stage('Initialize') {
       steps {
-        sh 'terraform init  ${TF_CONFIG_DIR}'
+        dir('./terraform'){
+        sh 'terraform init '
+        }
       }
     }
 
     stage('Plan') {
+       dir('./terraform'){
       steps {
         sh 'terraform plan -input=false ${TF_CONFIG_DIR}'
       }
+       }
     }
 
     stage('Apply') {
+       dir('./terraform'){
       steps {
         sh 'terraform apply -auto-approve -input=false ${TF_CONFIG_DIR}'
       }
+       }
     }
   }
 }
