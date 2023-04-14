@@ -19,7 +19,7 @@ pipeline {
     }
     stage('Initialize') {
       steps {
-        sh 'terraform init -backend-config="address=https://app.terraform.io" -backend-config="organization=${TF_ORGANIZATION}" -backend-config="workspaces=${TF_WORKSPACE}" ${TF_CONFIG_DIR}'
+        sh 'terraform init  ${TF_CONFIG_DIR}'
       }
     }
 
