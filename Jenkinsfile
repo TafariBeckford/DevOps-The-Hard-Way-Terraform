@@ -6,9 +6,6 @@ pipeline {
 
   environment {
     TF_API_TOKEN = credentials('terraform-api-token')
-    TF_ORGANIZATION = 'tafari'
-    TF_WORKSPACE = 'DevOps-The-Hard-Way-ArgoCD'
-    TF_CONFIG_DIR = './terraform'
   }
 
   stages {
@@ -20,7 +17,7 @@ pipeline {
     stage('Initialize') {
       steps {
         dir('terraform'){
-        sh 'terraform init'
+        sh 'terraform init $TF_API_TOKEN'
         }
       }
     }
