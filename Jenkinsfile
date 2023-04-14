@@ -18,7 +18,7 @@ pipeline {
     stage('Initialize') {
       steps {
         dir('terraform'){
-        sh 'terraform init'
+        sh 'terraform init -no-color'
         }
       }
     }
@@ -26,7 +26,7 @@ pipeline {
     stage('Plan') {
       steps {
         dir('terraform'){
-        sh 'terraform plan -input=false'
+        sh 'terraform plan -no-color -input=false'
       }
        }
     }
@@ -34,7 +34,7 @@ pipeline {
     stage('Apply') {
       steps {
         dir('terraform'){
-        sh 'terraform apply -auto-approve -input=false'
+        sh 'terraform apply -auto-approve -no-color -input=false'
       }
        }
     }
