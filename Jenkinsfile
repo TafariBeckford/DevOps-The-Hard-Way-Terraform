@@ -5,6 +5,7 @@ pipeline {
 }
 
   environment {
+    
     TF_API_TOKEN = credentials('terraform-api-token')
   }
 
@@ -17,7 +18,7 @@ pipeline {
     stage('Initialize') {
       steps {
         dir('terraform'){
-        sh 'terraform init $TF_API_TOKEN'
+        sh 'terraform init'
         }
       }
     }
