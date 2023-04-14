@@ -5,8 +5,8 @@ pipeline {
 }
 
   environment {
-    
-    TF_API_TOKEN = credentials('terraform-api-token')
+    TF_IN_AUTOMATION = 'true'
+    TF_CLI_CONFIG_FILE = credentials('tf-creds')
   }
 
   stages {
