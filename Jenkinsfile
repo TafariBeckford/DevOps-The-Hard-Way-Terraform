@@ -1,7 +1,7 @@
 pipeline {
 
  agent {
-  label 'agent-linux-default'
+  label 'agent-linux-slave'
 }
 
   environment {
