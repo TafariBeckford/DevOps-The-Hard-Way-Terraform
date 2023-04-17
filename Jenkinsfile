@@ -38,41 +38,5 @@ pipeline {
       }
        }
     }
-     stage('ECR Login') {
-      when{
-        branch 'ecr'
-      }
-      steps {
-        dir('app'){
-        sh ''' '''
-      }
-       }
-    }
-    stage('Docker build') {
-      when{
-        branch 'ecr'
-      }
-      steps {
-        dir('app'){
-        sh '''
-
-        docker build -t           .
-        
-         '''
-      }
-       }
-    }
-    stage('Push to ECR') {
-      when{
-        branch 'ecr'
-      }
-      steps {
-        dir('app'){
-        sh ''' '''
-      }
-       }
-    }
-    
-
   }
 }
