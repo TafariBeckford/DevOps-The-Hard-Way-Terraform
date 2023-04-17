@@ -12,7 +12,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-       checkout changelog: false, poll: false, scm: scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/TafariBeckford/DevOps-The-Hard-Way-Terraform.git']])
+       checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/TafariBeckford/DevOps-The-Hard-Way-Terraform.git']])
       }
     }
     stage('Initialize') {
@@ -38,5 +38,41 @@ pipeline {
       }
        }
     }
+     stage('ECR Login') {
+      when{
+        branch 'ecr'
+      }
+      steps {
+        dir('app'){
+        sh ''' '''
+      }
+       }
+    }
+    stage('Docker build') {
+      when{
+        branch 'ecr'
+      }
+      steps {
+        dir('app'){
+        sh '''
+
+        docker build -t           .
+        
+         '''
+      }
+       }
+    }
+    stage('Push to ECR') {
+      when{
+        branch 'ecr'
+      }
+      steps {
+        dir('app'){
+        sh ''' '''
+      }
+       }
+    }
+    
+
   }
 }
