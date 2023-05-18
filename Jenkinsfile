@@ -3,6 +3,10 @@ pipeline {
  agent {
   label 'agent-linux-slave'
 }
+ 
+  tools {
+    terraform 'terraform'
+ }
 
   environment {
     TF_IN_AUTOMATION = 'true'
