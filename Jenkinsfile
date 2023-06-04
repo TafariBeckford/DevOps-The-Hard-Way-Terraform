@@ -1,19 +1,19 @@
 pipeline {
 
  agent {
-  label 'agent-linux-slave'
+  label 'linux-agent'
 }
  
   tools {
     terraform 'terraform'
  }
 
-  environment {
+ environment {
     TF_IN_AUTOMATION = 'true'
     TF_CLI_CONFIG_FILE = credentials('tf-creds')
-    DOCKER_REGISTRY = "764450536500.dkr.ecr.us-east-1.amazonaws.com"
-    DOCKER_REPO_NAME = "devops-the-hard-way-repo"
-    DOCKER_IMAGE_TAG = "latest"
+    AWS_ACCOUNT_ID="764450536500"
+    AWS_DEFAULT_REGION="us-east-1" 
+    URL = "https://${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
   }
 
   stages {
@@ -33,7 +33,7 @@ pipeline {
     stage('Plan') {
       steps {
         dir('terraform'){
-        sh 'terraform plan -no-color -input=false'
+        sh 'terraform plan -no-color '
       }
        }
     }
@@ -41,34 +41,30 @@ pipeline {
     stage('Apply') {
       steps {
         dir('terraform'){
-        sh 'terraform apply -auto-approve -no-color -input=false'
-      }
-       }
-    }
-      stage('Build Docker Image') {
-         when{
-          branch 'ecr'
-        }
-      steps {
-        dir('app'){
-         sh 'docker build -t $DOCKER_REGISTRY/$DOCKER_REPO_NAME:$DOCKER_IMAGE_TAG .'
-      }
-       }
-    }
-    
-      stage('Push Docker Image') {
-        when{
-          branch 'ecr'
-        }
-      steps {
-        dir('app'){
-         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
-                    sh "aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY"
-                    sh "docker push $DOCKER_REGISTRY/$DOCKER_REPO_NAME:$DOCKER_IMAGE_TAG"
+        sh 'terraform apply -auto-approve -no-color'
       }
        }
     }
 
-  }
+    stage('Deploy'){
+     when{
+          branch 'ecr'
+        }
+     steps{
+         dir('app'){
+        script{
+            withDockerRegistry(credentialsId: 'ecr:us-east-1:aws-creds', url: 'https://764450536500.dkr.ecr.us-east-1.amazonaws.com') {
+                
+             def myImage = docker.build('devops-the-hard-way-repo')
+             myImage.push('latest')
 }
+        } 
+         
+     }
+     
+     }
+      
+    }
+
+  }
 }
